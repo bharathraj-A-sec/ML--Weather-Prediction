@@ -49,3 +49,34 @@ df = pd.DataFrame(data)
 
 
 X = df[['Humidity', 'Pressure', 'WindSpeed']]
+y = df[['Temperature', 'PM2.5', 'Energy']]  # multi-output regression
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+
+model = RandomForestRegressor(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+
+y_pred = model.predict(X_test)
+
+
+mae = mean_absolute_error(y_test, y_pred)
+rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+r2 = r2_score(y_test, y_pred)
+
+print("Mean Absolute Error (MAE):", mae)
+print("Root Mean Squared Error (RMSE):", rmse)
+print("R2 Score:", r2)
+
+cv_scores = cross_val_score(model, X, y, cv=5, scoring='r2')
+print("\nCross Validation R2 Scores:", cv_scores)
+print("Average CV Score:", cv_scores.mean())
+
+*/
+```
+
+## Output:
+
+<img width="1097" height="152" alt="Screenshot 2026-05-11 204756" src="https://github.com/user-attachments/assets/a8564fe9-2e4a-4e86-9569-d1333d1b8e63" />
